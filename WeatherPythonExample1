@@ -1,0 +1,55 @@
+import requests, json, math
+from pprint import pprint
+
+API_key = "YOUR API KEY"
+base_url = "http://api.openweathermap.org/data/2.5/weather?"
+
+zip_code = input("Enter a Zip code and country code : ")
+Final_url = base_url + "appid=" + API_key + "&zip=" + zip_code
+
+weather_data = requests.get(Final_url).json()
+
+if x["cod"] != "404": 
+
+	# store the value of "main" 
+	# key in variable y 
+	y = x["main"] 
+
+	# store the value corresponding 
+	# to the "temp" key of y 
+	current_temperature = y["temp"] 
+
+	# store the value corresponding 
+	# to the "pressure" key of y 
+	current_pressure = y["pressure"] 
+
+	# store the value corresponding 
+	# to the "humidity" key of y 
+	current_humidiy = y["humidity"] 
+
+	# store the value of "weather" 
+	# key in variable z 
+	z = x["weather"] 
+
+	# store the value corresponding 
+	# to the "description" key at 
+	# the 0th index of z 
+	weather_description = z[0]["description"] 
+#	fahrenheit_temp = current_temperature * ( 9 / 5 ) + 32
+	# print following values 
+	print(" Temperature (in kelvin unit) = " +
+					str(current_temperature) + 
+		"\n Temp F = 111111111" +
+					str(int(((current_temperature-273.15) * 1.8) + 32)) +
+		"\n atmospheric pressure (in hPa unit) = " +
+					str(current_pressure) +
+		"\n humidity (in percentage) = " +
+					str(current_humidiy) +
+		"\n description = " +
+					str(weather_description)) 
+
+else: 
+	print(" City Not Found ") 
+
+#print("\nCurrent Weather Data Of " + zip_code +":\n")
+#pprint(weather_data)
