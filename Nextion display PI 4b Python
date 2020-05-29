@@ -1,0 +1,21 @@
+import serial
+from datetime import datetime
+import time
+import urllib
+import pdb
+
+port=serial.Serial(port='/dev/ttyS0',baudrate=9600, timeout=1.0)
+eof = "\xff\xff\xff"
+
+
+
+txtestx = 'hello there'
+txx1 = 'page0.txx1.txt="'+txtestx+'"'+eof
+port.write(txx1)
+print (str (txx1))
+
+
+
+
+
+	
