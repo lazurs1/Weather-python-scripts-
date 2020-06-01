@@ -1,0 +1,145 @@
+#!/usr/bin/python
+import serial
+from datetime import datetime
+import binascii
+import time
+import urllib
+import pdb
+import requests
+import json
+import math
+
+port=serial.Serial(port='/dev/ttyS0',baudrate=9600, timeout=1.0)
+eof = "\xff\xff\xff"
+rcvd =''
+o=''
+c=''
+keypress=''
+zip=''
+truncated_input =''
+l = []
+txx1=''
+txtestx = 'hello there'
+txx1 = 'page0.txx1.txt="'+txtestx+'"'+eof
+port.write(txx1)
+#print (str (txx1))
+
+
+
+    
+
+
+#while True:
+    #Serial_line = port.readline()
+    #touch=port.read_until(eof)
+    #print str(touch)
+    #read_byte = port.read()
+    #print '%x' % ord(read_byte)
+
+while True:
+    s = port.readline()
+    hex_string = binascii.hexlify(s).decode('utf-8')
+   # print ord(s), " ",
+    text = "abc"
+    truncated_input = hex_string[0:6]
+    print (truncated_input)
+    
+    if truncated_input == '650101':
+      #print('1 PRESSED')
+      keypress='1'
+
+    elif truncated_input == '650102':
+      #print('2 PRESSED')
+      keypress='2'
+      
+    elif truncated_input == '650103':
+      #print('3 PRESSED')
+      keypress='3'
+      
+    elif truncated_input == '650104':
+      #print('4 PRESSED')
+      keypress='4'
+
+    elif truncated_input == '650105':
+      #print('5 PRESSED')
+      keypress='5'
+
+    elif truncated_input == '650106':
+      print('6 PRESSED')
+      keypress='6'
+
+
+    elif truncated_input == '650109':
+      #print('9 PRESSED')
+      keypress='9'
+
+
+    elif truncated_input == '65010a':
+      #print('0 PRESSED')
+      keypress='0'
+
+    elif truncated_input == '65010b':
+      #print('ENTER PRESSED')
+      keypress='1'
+
+#NEMO Zip pressed
+    elif truncated_input == '65010f':
+        zip='48240'
+        zipwithcountrycode= zip + ',us'
+        api_key = "e7b399218e23b8342d5f735393dc4489"
+        base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        complete_url = base_url +  "zip=" + zipwithcountrycode + "&appid=" + api_key
+        #complete_url = base_url + "appid=" + api_key + "&q=" + city_name 
+        response = requests.get(complete_url) 
+        x = response.json() #print('ENTER PRESSED')
+        #print (x)
+        y = x["main"]
+        current_temperature = y["temp"]
+        temptodisplay= str(int(((current_temperature-273.15) * 1.8) + 32))
+        temptext = 'page2.ttemp.txt="'+ temptodisplay + '"'+eof
+        port.write(temptext)
+        print(temptext)
+    #elif hex_string == '65010a':
+     # print('0 PRESSED')
+
+
+    
+   # elif hex_string == '65010b':
+    #  print('ENTER PRESSED')
+
+
+
+    
+    #else:
+      #print(hex_string)
+      
+    zip += keypress
+    #print zip
+    txx1 = 'page1.t0.txt="'+zip+'"'+eof
+    port.write(txx1)
+    keypress=''
+#    zip= zip + keypress
+#    txx1 = 'page2.ziptext.txt="'+txtestx+'"'+eof
+    #st = port.readline()
+   # print("Vaule="+str(st))
+    #r=st
+    #for c in r:
+     # o = o + ' ' + hex(ord(r))[2:]
+    #print o
+  #  print(k)
+#    status, unknown1, model, fwversion, mcucode, serial, flashSize = r.split(',')
+   # if len(c) == 0:
+      #  print("blank")
+
+
+    #for ch in c:
+      #  print ord(ch), " ",
+        #testvarialbestring= ord(ch), " ",
+        #if str(testvariablebestring) = "101   1   2   1   255   255   255   blank"
+        #   print("MATCH!!")
+        #else
+        #   print("NOT")
+            
+#Enter Key 101   1   11   1   255   255   255   blank
+#Enter Key 101DEVICE   1-Screen   11-Button   1   255END   255END   255END   blank
+
