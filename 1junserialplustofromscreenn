@@ -86,7 +86,7 @@ while True:
     elif truncated_input == '65010f':
         zip='48240'
         zipwithcountrycode= zip + ',us'
-        api_key = "e7b399218e23b8342d5f735393dc4489"
+        api_key = <Your API Key Here>
         base_url = "http://api.openweathermap.org/data/2.5/weather?"
         complete_url = base_url +  "zip=" + zipwithcountrycode + "&appid=" + api_key
         #complete_url = base_url + "appid=" + api_key + "&q=" + city_name 
